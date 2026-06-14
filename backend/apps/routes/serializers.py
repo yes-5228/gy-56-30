@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.attractions.serializers import AttractionSerializer
-from .models import RouteStop, TravelRoute
+from .models import Review, RouteStop, TravelRoute
 
 
 class RouteStopSerializer(serializers.ModelSerializer):
@@ -13,13 +13,34 @@ class RouteStopSerializer(serializers.ModelSerializer):
         fields = ["id", "day", "order", "note", "attraction", "attraction_id"]
 
 
+class ReviewSerializer(serializers.ModelSerializer):
+    rating_label = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ["id", "route", "reviewer_name", "rating", "rating_label", "feedback", "created_at"]
+        read_only_fields = ["created_at"]
+
+    def get_rating_label(self, obj):
+        return f"{obj.rating}星"
+
+    def validate_route(self, value):
+        if not value.can_review:
+            raise serializers.ValidationError("该线路尚未结束，暂不能评价")
+        return value
+
+
 class TravelRouteSerializer(serializers.ModelSerializer):
     stops = RouteStopSerializer(many=True)
+    reviews = ReviewSerializer(many=True, read_only=True)
     status_label = serializers.CharField(source="get_status_display", read_only=True)
     ticket_total = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     estimated_cost = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     enrolled_count = serializers.IntegerField(read_only=True)
     group_progress = serializers.IntegerField(read_only=True)
+    review_count = serializers.IntegerField(read_only=True)
+    average_rating = serializers.FloatField(read_only=True)
+    can_review = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = TravelRoute
@@ -40,8 +61,12 @@ class TravelRouteSerializer(serializers.ModelSerializer):
             "status_label",
             "enrolled_count",
             "group_progress",
+            "review_count",
+            "average_rating",
+            "can_review",
             "description",
             "stops",
+            "reviews",
         ]
 
     def create(self, validated_data):

@@ -38,6 +38,7 @@
         :bookings="bookings"
         :notices="notices"
         @booking-created="handleBookingCreated"
+        @review-submitted="handleReviewSubmitted"
       />
     </main>
   </div>
@@ -99,6 +100,10 @@ async function loadData() {
 
 async function handleBookingCreated(payload) {
   await travelApi.createBooking(payload);
+  await loadData();
+}
+
+async function handleReviewSubmitted() {
   await loadData();
 }
 

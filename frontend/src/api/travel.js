@@ -6,4 +6,6 @@ export const travelApi = {
   getBookings: () => get("/bookings/"),
   getNotices: () => get("/notifications/"),
   createBooking: (payload) => post("/bookings/", payload),
+  getRouteReviews: (routeId) => get(`/routes/${routeId}/reviews/`),
+  createRouteReview: (routeId, payload) => post(`/routes/${routeId}/reviews/`, payload),
 };

@@ -8,6 +8,7 @@ class TravelRoute(models.Model):
         ("draft", "草稿"),
         ("published", "已发布"),
         ("forming", "报名成团中"),
+        ("completed", "已结束"),
     ]
 
     title = models.CharField("线路名称", max_length=100)
@@ -48,6 +49,21 @@ class TravelRoute(models.Model):
             return 100
         return min(round(self.enrolled_count / self.min_group_size * 100), 100)
 
+    @property
+    def review_count(self):
+        return self.reviews.count()
+
+    @property
+    def average_rating(self):
+        reviews = self.reviews.all()
+        if not reviews:
+            return 0
+        return round(sum(r.rating for r in reviews) / len(reviews), 1)
+
+    @property
+    def can_review(self):
+        return self.status == "completed"
+
 
 class RouteStop(models.Model):
     route = models.ForeignKey(TravelRoute, related_name="stops", on_delete=models.CASCADE)
@@ -62,3 +78,19 @@ class RouteStop(models.Model):
 
     def __str__(self):
         return f"{self.route.title} D{self.day}-{self.order}"
+
+
+class Review(models.Model):
+    RATING_CHOICES = [(i, str(i)) for i in range(1, 6)]
+
+    route = models.ForeignKey(TravelRoute, related_name="reviews", on_delete=models.CASCADE)
+    reviewer_name = models.CharField("评价人", max_length=60)
+    rating = models.PositiveSmallIntegerField("评分", choices=RATING_CHOICES)
+    feedback = models.TextField("反馈内容", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at", "id"]
+
+    def __str__(self):
+        return f"{self.reviewer_name} - {self.route.title} ({self.rating}★)"

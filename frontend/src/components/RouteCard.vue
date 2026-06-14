@@ -19,6 +19,15 @@
         <i :style="{ width: `${route.group_progress}%` }"></i>
       </div>
     </div>
+    <div v-if="route.review_count > 0" class="rating-row">
+      <div class="rating-info">
+        <span class="rating-score">{{ route.average_rating }}</span>
+        <span class="rating-stars">
+          <i v-for="n in 5" :key="n" :class="{ filled: n <= Math.round(route.average_rating) }">★</i>
+        </span>
+        <span class="rating-count">{{ route.review_count }} 条评价</span>
+      </div>
+    </div>
     <ol class="stop-list">
       <li v-for="stop in route.stops" :key="stop.id">
         <span>D{{ stop.day }}-{{ stop.order }}</span>
@@ -28,6 +37,28 @@
         </div>
       </li>
     </ol>
+    <div v-if="route.reviews && route.reviews.length > 0" class="review-section">
+      <h4>游客反馈</h4>
+      <ul class="review-list">
+        <li v-for="review in route.reviews.slice(0, 3)" :key="review.id" class="review-item">
+          <div class="review-head">
+            <span class="reviewer">{{ review.reviewer_name }}</span>
+            <span class="review-rating">
+              <i v-for="n in 5" :key="n" :class="{ filled: n <= review.rating }">★</i>
+            </span>
+          </div>
+          <p v-if="review.feedback" class="review-feedback">{{ review.feedback }}</p>
+        </li>
+      </ul>
+    </div>
+    <button
+      v-if="route.can_review"
+      type="button"
+      class="review-action"
+      @click="$emit('open-review', route)"
+    >
+      提交评价
+    </button>
   </article>
 </template>
 
@@ -35,4 +66,6 @@
 defineProps({
   route: { type: Object, required: true },
 });
+
+defineEmits(["open-review"]);
 </script>

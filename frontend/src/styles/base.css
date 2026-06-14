@@ -356,6 +356,166 @@ textarea {
   color: #0f766e;
 }
 
+.rating-row {
+  padding-top: 4px;
+}
+
+.rating-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rating-score {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.rating-stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.rating-stars i,
+.review-rating i {
+  font-style: normal;
+  font-size: 16px;
+  color: #d1d5db;
+}
+
+.rating-stars i.filled,
+.review-rating i.filled {
+  color: #f59e0b;
+}
+
+.rating-count {
+  color: #65717f;
+  font-size: 13px;
+}
+
+.review-section {
+  padding-top: 4px;
+}
+
+.review-section h4 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #415063;
+}
+
+.review-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.review-item {
+  background: #f5f7fa;
+  border-radius: 8px;
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.review-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reviewer {
+  font-weight: 700;
+  color: #17202a;
+  font-size: 13px;
+}
+
+.review-feedback {
+  margin: 0;
+  color: #65717f;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.review-action {
+  border: 0;
+  border-radius: 8px;
+  background: #eab308;
+  color: #17202a;
+  min-height: 40px;
+  padding: 0 16px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.review-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.review-modal {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 480px;
+  display: grid;
+  gap: 16px;
+}
+
+.review-modal h3 {
+  margin: 0;
+}
+
+.star-picker {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.star-picker button {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 32px;
+  line-height: 1;
+  color: #d1d5db;
+}
+
+.star-picker button.filled {
+  color: #f59e0b;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-actions button {
+  min-height: 40px;
+  padding: 0 20px;
+  border-radius: 8px;
+  border: 0;
+  font-weight: 700;
+}
+
+.modal-actions .cancel-btn {
+  background: #e7f2ef;
+  color: #0f766e;
+}
+
+.modal-actions .submit-btn {
+  background: #0f766e;
+  color: white;
+}
+
 @media (max-width: 900px) {
   .app-shell,
   .booking-layout {
